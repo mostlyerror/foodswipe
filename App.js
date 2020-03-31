@@ -1,55 +1,25 @@
-import React, { useRef } from "react";
-import { Text, View, Image } from "react-native";
-import Swiper from 'react-native-deck-swiper'
-import { photoCards } from './constants'
+import "react-native-gesture-handler";
+// this has to be the first import:
+// https://reactnavigation.org/docs/getting-started/
 
-import { IconButton, Card } from "./components";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import styles from "./App.styles";
+import HomeScreen from "./screens/HomeScreen";
+import SwipeScreen from "./screens/SwipeScreen";
+import YelpScreen from "./screens/YelpScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const useSwiper = useRef(null).current
-  const handleOnSwipedLeft = () => useSwiper.swipeLeft()
-  const handleOnSwipedTop = () => useSwiper.swipeTop()
-  const handleOnSwipedRight = () => useSwiper.swipeRight()
-
   return (
-    <View style={styles.container}>
-      <View style={styles.swiperContainer}>
-        <Swiper
-          ref={useSwiper}
-          animateCardOpacity
-          containerStyle={styles.container}
-          cards={photoCards}
-          renderCard={card => <Card card={card} />}
-          cardIndex={0}
-          backgroundColor="white"
-          stackSize={2}
-          showSecondCard
-          infinite
-          // animateOverlayLabelsOpacity
-        />
-      </View>
-      <View style={styles.buttonsContainer}>
-        <IconButton
-          name="close"
-          onPress={handleOnSwipedLeft}
-          color="white"
-          backgroundColor="#e5566d"
-        />
-        <IconButton
-          name="star"
-          onPress={handleOnSwipedTop}
-          color="white"
-          backgroundColor="#3ca3ff"
-        />
-        <IconButton
-          name="heart"
-          onPress={handleOnSwipedRight}
-          color="white"
-          backgroundColor="#4ccc93"
-        />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Swipe" component={SwipeScreen} />
+        <Stack.Screen name="Yelp" component={YelpScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
