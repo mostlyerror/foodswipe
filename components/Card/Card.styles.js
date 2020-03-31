@@ -4,6 +4,8 @@ const height = Dimensions.get('window').height
 
 export default StyleSheet.create({
     card: {
+        borderRadius: 15,
+        paddingVertical: 10,
         justifyContent: 'center',
         backgroundColor: 'white',
         borderRadius: 5,
@@ -16,9 +18,14 @@ export default StyleSheet.create({
         shadowOpacity: 0.3,
         elevation: 2,
     },
+    restaurantInfoContainer: {
+        padding: 10,
+    },
+    restaurantName: {
+        fontSize: 32,
+        fontWeight: '700',
+    },
     image: {
-        borderRadius: 5,
-        flex: 1,
         width: '100%',
     },
     photoDescriptionContainer: {
