@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import Constants from "expo-constants";
 
 const YelpScreen = () => {
@@ -8,8 +8,10 @@ const YelpScreen = () => {
     "dItE7R4KtrNGfggTFABAx85wA1JaRD4EeSmEfDdqpp6YvWderZXxRjlv9i9yUM19Qbp3HT-aNxQEI-WWVQCRy38Wa1RJ37U7ZbYMhkK0_7edFwdhi9ICn07mtrf3WXYx"
   );
   const [apiResponse, setApiResponse] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const testYelpApi = async event => {
+    setIsLoading(true);
     let lat = null;
     let lng = null;
     const url =
@@ -21,13 +23,11 @@ const YelpScreen = () => {
       }
     })
       .then(res => res.json())
-      .then(data => setApiResponse(data));
+      .then(data => {
+        setApiResponse(data);
+        setIsLoading(false);
+      });
   };
-
-  const clearResponse = async event => {
-    console.log('hi')
-    setApiResponse(null);
-  }
 
   return (
     <View
@@ -96,17 +96,20 @@ const YelpScreen = () => {
               backgroundColor: "white"
             }}
           >
-
+            {isLoading && <ActivityIndicator animating={true} size="large" />}
+            {apiResponse && <Text>{JSON.stringify(apiResponse, null, 2)}</Text>}
             {apiResponse && (
-              <View style={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}>
-                <TouchableOpacity style={{backgroundColor: 'red', padding: 10, }}
-                onPress={clearResponse}>
-                  <Text style={{color: 'white'}}>Clear</Text>
+              <View
+                style={{ position: "absolute", top: 0, right: 0, zIndex: 1 }}
+              >
+                <TouchableOpacity
+                  style={{ backgroundColor: "red", padding: 10 }}
+                  onPress={() => { setApiResponse(null) }}
+                >
+                  <Text style={{ color: "white" }}>Clear</Text>
                 </TouchableOpacity>
               </View>
             )}
-
-            <Text>{apiResponse ? JSON.stringify(apiResponse, null, 2) : 'press test button to execute api call'}</Text>
           </View>
         </View>
       </View>
